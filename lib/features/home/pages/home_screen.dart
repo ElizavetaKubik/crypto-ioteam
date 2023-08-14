@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:crypto_ioteam/core/constants/colors.dart';
 import 'package:crypto_ioteam/features/coin_list/bloc/coin_list_bloc.dart';
 import 'package:crypto_ioteam/features/coin_list/widgets/coin_tile.dart';
+import 'package:crypto_ioteam/features/coin_list/widgets/coin_tile_recommended.dart';
 import 'package:crypto_ioteam/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,9 +53,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Container(
       height: appHeight * 0.7,
       width: appWidth,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 5,
+            color: Colors.grey.shade200,
+            spreadRadius: 5,
+            offset: const Offset(0, 3),
+          )
+        ],
         color: Colors.white,
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(50),
           topRight: Radius.circular(50),
         ),
@@ -62,30 +71,36 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           SizedBox(height: appHeight * 0.03),
-          Padding(
-            padding: EdgeInsets.only(
-              left: appWidth * 0.08,
-              right: appWidth * 0.08,
-              bottom: appHeight * 0.01,
-            ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Assets',
-                  style: TextStyle(fontSize: 20),
-                ),
-                Icon(Icons.add),
-              ],
-            ),
-          ),
+          _buildAssetsRow(appWidth, appHeight),
           _buildCoinList(),
         ],
       ),
     );
   }
 
+  Padding _buildAssetsRow(double appWidth, double appHeight) {
+    return Padding(
+      padding: EdgeInsets.only(
+        left: appWidth * 0.08,
+        right: appWidth * 0.08,
+        bottom: appHeight * 0.01,
+      ),
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            'Assets',
+            style: TextStyle(fontSize: 20),
+          ),
+          Icon(Icons.add),
+        ],
+      ),
+    );
+  }
+
   BlocBuilder<CoinListBloc, CoinListState> _buildCoinList() {
+    double appHeight = MediaQuery.of(context).size.height;
+    double appWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<CoinListBloc, CoinListState>(
       builder: (context, state) {
         if (state is CoinListLoading) {
@@ -125,11 +140,54 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         if (state is CoinListLoaded) {
           return Expanded(
-            child: ListView.builder(
-                itemCount: state.coinList.length,
-                itemBuilder: (context, index) {
-                  return CoinTile(coin: state.coinList[index]);
-                }),
+            child: Column(
+              children: [
+                ListView.builder(
+                    //itemCount: state.coinList.length,
+                    itemCount: 4,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return CoinTile(coin: state.coinList[index]);
+                    }),
+                SizedBox(height: appHeight * 0.02),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: appWidth * 0.08),
+                  child: const Row(
+                    children: [
+                      Text(
+                        'Recommended to Buy',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: appHeight * 0.01),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
+                    child: Container(
+                      //height: appHeight * 0.23,
+                      width: appWidth,
+                      //color: Colors.green,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: state.coinList.length,
+                        itemBuilder: (context, index) {
+                          return CoinTileRecommended(
+                            coin: state.coinList[index],
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: appHeight * 0.01),
+              ],
+            ),
           );
         }
 

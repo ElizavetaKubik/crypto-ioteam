@@ -12,23 +12,21 @@ class CoinTile extends StatelessWidget {
     double appWidth = MediaQuery.of(context).size.width;
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: appWidth * 0.04,
+        horizontal: appWidth * 0.02,
         vertical: appHeight * 0.02,
       ),
       child: Row(
         children: [
           Expanded(
-            flex: 2,
-            child: Container(
-              child: Image.network(
-                coin.image,
-                height: appHeight * 0.05,
-              ),
+            flex: 4,
+            child: Image.network(
+              coin.image,
+              height: appHeight * 0.05,
             ),
           ),
           SizedBox(width: appWidth * 0.02),
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +51,7 @@ class CoinTile extends StatelessWidget {
           ),
           SizedBox(width: appWidth * 0.02),
           Expanded(
-            flex: 4,
+            flex: 6,
             child: Container(
               height: appHeight * 0.05,
               width: appWidth * 0.15,
@@ -77,9 +75,9 @@ class CoinTile extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: appWidth * 0.05),
+          SizedBox(width: appWidth * 0.03),
           Expanded(
-            flex: 4,
+            flex: 8,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -99,16 +97,21 @@ class CoinTile extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
+                        // color: coin.marketCapChangePercentage24H > 0
+                        //     ? Colors.green
+                        //     : Colors.red,
                         color: Colors.grey,
                       ),
                     ),
                     SizedBox(width: appWidth * 0.03),
                     Text(
-                      coin.marketCapChangePercentage24H.toStringAsFixed(2),
-                      style: const TextStyle(
+                      '${coin.marketCapChangePercentage24H.toStringAsFixed(2)}%',
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
-                        color: Colors.grey,
+                        color: coin.marketCapChangePercentage24H > 0
+                            ? Colors.green
+                            : Colors.red,
                       ),
                     ),
                   ],
