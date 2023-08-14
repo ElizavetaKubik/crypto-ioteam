@@ -1,7 +1,10 @@
 import 'package:crypto_ioteam/config/routes/router.dart';
+import 'package:crypto_ioteam/injection_container.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDependencies();
   runApp(const App());
 }
 

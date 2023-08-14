@@ -15,15 +15,15 @@ class _NavBarScreenState extends State<NavBarScreen> {
   int _currentIndex = 0;
 
   List<Widget> pages = [
-    HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
   ];
   @override
   Widget build(BuildContext context) {
     double appHeight = MediaQuery.of(context).size.height;
-    double appWidth = MediaQuery.of(context).size.width;
+    //double appWidth = MediaQuery.of(context).size.width;
 
     return SafeArea(
       child: Scaffold(
