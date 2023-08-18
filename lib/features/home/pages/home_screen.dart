@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_ioteam/core/constants/colors.dart';
+import 'package:crypto_ioteam/core/util.dart';
 import 'package:crypto_ioteam/features/coin_list/bloc/coin_list_bloc.dart';
-import 'package:crypto_ioteam/features/coin_list/widgets/coin_tile.dart';
-import 'package:crypto_ioteam/features/coin_list/widgets/coin_tile_recommended.dart';
+import 'package:crypto_ioteam/features/home/widgets/widgets.dart';
 import 'package:crypto_ioteam/injection_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,13 +18,16 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    double appHeight = MediaQuery.of(context).size.height;
-    double appWidth = MediaQuery.of(context).size.width;
+    double screenHeight = getScreenHeight(context);
+    double screenWidth = getScreenWidth(context);
+
+    final theme = Theme.of(context);
+
     return BlocProvider<CoinListBloc>(
       create: (context) => sl()..add(LoadCoinList()),
       child: Container(
-        height: appHeight,
-        width: appWidth,
+        height: screenHeight,
+        width: screenWidth,
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -38,242 +41,22 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _buildTopButtons(appHeight, appWidth),
-            _buildValueAndIcon(appWidth, appHeight),
-            _buildProfit(appWidth),
-            SizedBox(height: appHeight * 0.02),
-            _buildCoinListContainer(appHeight, appWidth),
+            HeaderButtonsWidget(
+              screenHeight: screenHeight,
+              screenWidth: screenWidth,
+              theme: theme,
+            ),
+            MainInfoWidget(
+                screenWidth: screenWidth,
+                theme: theme,
+                screenHeight: screenHeight),
+            SizedBox(height: screenHeight * 0.02),
+            CoinListWidget(
+                screenHeight: screenHeight,
+                screenWidth: screenWidth,
+                theme: theme),
           ],
         ),
-      ),
-    );
-  }
-
-  Container _buildCoinListContainer(double appHeight, double appWidth) {
-    return Container(
-      height: appHeight * 0.7,
-      width: appWidth,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 5,
-            color: Colors.grey.shade200,
-            spreadRadius: 5,
-            offset: const Offset(0, 3),
-          )
-        ],
-        color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(50),
-          topRight: Radius.circular(50),
-        ),
-      ),
-      child: Column(
-        children: [
-          SizedBox(height: appHeight * 0.03),
-          _buildAssetsRow(appWidth, appHeight),
-          _buildCoinList(),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildAssetsRow(double appWidth, double appHeight) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: appWidth * 0.08,
-        right: appWidth * 0.08,
-        bottom: appHeight * 0.01,
-      ),
-      child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'Assets',
-            style: TextStyle(fontSize: 20),
-          ),
-          Icon(Icons.add),
-        ],
-      ),
-    );
-  }
-
-  BlocBuilder<CoinListBloc, CoinListState> _buildCoinList() {
-    double appHeight = MediaQuery.of(context).size.height;
-    double appWidth = MediaQuery.of(context).size.width;
-    return BlocBuilder<CoinListBloc, CoinListState>(
-      builder: (context, state) {
-        if (state is CoinListLoading) {
-          return const Expanded(
-            child: Center(
-              child: CircularProgressIndicator(),
-            ),
-          );
-        }
-        if (state is CoinListLoadingFailure) {
-          return Expanded(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Something went wrong',
-                    style: TextStyle(fontSize: 22),
-                  ),
-                  const Text(
-                    'Please try againg later',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  const SizedBox(height: 30),
-                  TextButton(
-                    onPressed: () {
-                      BlocProvider.of<CoinListBloc>(context)
-                          .add(LoadCoinList());
-                    },
-                    child: const Text('Try again'),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-        if (state is CoinListLoaded) {
-          return Expanded(
-            child: Column(
-              children: [
-                ListView.builder(
-                    //itemCount: state.coinList.length,
-                    itemCount: 4,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return CoinTile(coin: state.coinList[index]);
-                    }),
-                SizedBox(height: appHeight * 0.02),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: appWidth * 0.08),
-                  child: const Row(
-                    children: [
-                      Text(
-                        'Recommended to Buy',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: appHeight * 0.01),
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
-                    child: SizedBox(
-                      //height: appHeight * 0.23,
-                      width: appWidth,
-                      //color: Colors.green,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: state.coinList.length,
-                        itemBuilder: (context, index) {
-                          return CoinTileRecommended(
-                            coin: state.coinList[index],
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: appHeight * 0.01),
-              ],
-            ),
-          );
-        }
-
-        return Container();
-      },
-    );
-  }
-
-  Padding _buildProfit(double appWidth) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: appWidth * 0.07),
-      child: const Row(
-        children: [
-          Text(
-            '+ 167% all time',
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildValueAndIcon(double appWidth, double appHeight) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: appWidth * 0.07,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Text(
-            '\$ 7.987',
-            style: TextStyle(fontSize: 35),
-          ),
-          Container(
-            height: appHeight * 0.06,
-            //width: appWidth * 0.12,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white.withOpacity(0.5),
-            ),
-            child: Container(
-              padding: EdgeInsets.all(
-                appHeight * 0.01,
-              ),
-              child: Image.asset(
-                'assets/icons/5.1.png',
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Padding _buildTopButtons(double appHeight, double appWidth) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        vertical: appHeight * 0.02,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: appWidth * 0.02,
-              vertical: appHeight * 0.008,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Text(
-              'Main Portfolio',
-              style: TextStyle(fontSize: 18),
-            ),
-          ),
-          const Text(
-            'Top 10 coins',
-            style: TextStyle(fontSize: 18),
-          ),
-          const Text(
-            'Experimental',
-            style: TextStyle(fontSize: 18),
-          ),
-        ],
       ),
     );
   }

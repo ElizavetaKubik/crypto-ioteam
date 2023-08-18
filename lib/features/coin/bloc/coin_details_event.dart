@@ -5,7 +5,7 @@ abstract class CoinDetailsEvent extends Equatable {
 }
 
 final class LoadCoinDetails extends CoinDetailsEvent {
-  const LoadCoinDetails({required this.coinId, this.time = 1});
+  const LoadCoinDetails({required this.coinId, required this.time});
   final String coinId;
   final int time;
 

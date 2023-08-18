@@ -1,4 +1,5 @@
 import 'package:crypto_ioteam/config/routes/router.dart';
+import 'package:crypto_ioteam/config/theme/theme.dart';
 import 'package:crypto_ioteam/injection_container.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class _AppState extends State<App> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       routerConfig: _appRouter.config(),
+      theme: AppTheme.lightTheme,
     );
   }
 }

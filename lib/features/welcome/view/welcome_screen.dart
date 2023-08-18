@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:crypto_ioteam/config/routes/router.dart';
 import 'package:crypto_ioteam/core/constants/colors.dart';
+import 'package:crypto_ioteam/core/util.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
@@ -14,50 +15,46 @@ class WelcomeScreen extends StatefulWidget {
 class _WelcomeScreenState extends State<WelcomeScreen> {
   @override
   Widget build(BuildContext context) {
-    double appHeight = MediaQuery.of(context).size.height;
-    double appWidth = MediaQuery.of(context).size.width;
+    double screenHeight = getScreenHeight(context);
+    double screenWidth = getScreenWidth(context);
+
+    final theme = Theme.of(context);
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SizedBox(
-          height: appHeight,
-          width: appWidth,
+          height: screenHeight,
+          width: screenWidth,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Image.asset(
                 'assets/images/welcome.gif',
-                width: appHeight * 0.5,
-                height: appHeight * 0.5,
+                height: screenHeight * 0.5,
+                width: screenHeight * 0.5,
               ),
-              const Column(
+              Column(
                 children: [
                   Text(
                     'Future',
-                    style: TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
+                    style: theme.textTheme.displayLarge,
                   ),
                   Text(
                     'Learn more about cryptocurrency, look to',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
-                    ),
+                    style: theme.textTheme.headlineMedium
+                        ?.copyWith(color: Colors.grey),
                   ),
                   Text(
                     'the future in IO Crypto (edited)',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey,
-                    ),
+                    style: theme.textTheme.headlineMedium
+                        ?.copyWith(color: Colors.black45),
                   ),
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: appWidth * 0.14),
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.14),
                 child: GestureDetector(
                   onTap: () {
                     AutoRouter.of(context).push(const NavBarRoute());
@@ -69,20 +66,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                        horizontal: appWidth * 0.05,
-                        vertical: appHeight * 0.013,
+                        vertical: screenHeight * 0.02,
+                        horizontal: screenWidth * 0.05,
                       ),
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'CREATE PORTFOLIO  ',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.normal,
-                            ),
+                            style: theme.textTheme.headlineMedium,
                           ),
-                          RotationTransition(
+                          const RotationTransition(
                             turns: AlwaysStoppedAnimation(310 / 360),
                             child: Icon(Icons.arrow_forward_rounded),
                           ),

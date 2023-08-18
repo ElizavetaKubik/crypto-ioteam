@@ -18,8 +18,11 @@ final class CoinDetailsLoading extends CoinDetailsState {
 }
 
 final class CoinDetailsLoaded extends CoinDetailsState {
-  const CoinDetailsLoaded({required this.chartList});
+  const CoinDetailsLoaded(
+      {required this.chartList, required this.minVal, required this.maxVal});
   final List<ChartModel> chartList;
+  final double minVal;
+  final double maxVal;
 
   @override
   List<Object> get props => [chartList];

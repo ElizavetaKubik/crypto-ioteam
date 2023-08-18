@@ -22,8 +22,9 @@ class _NavBarScreenState extends State<NavBarScreen> {
   ];
   @override
   Widget build(BuildContext context) {
-    double appHeight = MediaQuery.of(context).size.height;
-    //double appWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    final iconHeght = screenHeight * 0.035;
 
     return SafeArea(
       child: Scaffold(
@@ -44,12 +45,12 @@ class _NavBarScreenState extends State<NavBarScreen> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/icons/1.1.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: Colors.grey,
               ),
               activeIcon: Image.asset(
                 'assets/icons/1.2.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: AppColors.primaryYellow,
               ),
               label: '',
@@ -57,12 +58,12 @@ class _NavBarScreenState extends State<NavBarScreen> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/icons/2.1.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: Colors.grey,
               ),
               activeIcon: Image.asset(
                 'assets/icons/2.2.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: AppColors.primaryYellow,
               ),
               label: '',
@@ -70,12 +71,12 @@ class _NavBarScreenState extends State<NavBarScreen> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/icons/3.1.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: Colors.grey,
               ),
               activeIcon: Image.asset(
                 'assets/icons/3.2.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: AppColors.primaryYellow,
               ),
               label: '',
@@ -83,12 +84,12 @@ class _NavBarScreenState extends State<NavBarScreen> {
             BottomNavigationBarItem(
               icon: Image.asset(
                 'assets/icons/4.1.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: Colors.grey,
               ),
               activeIcon: Image.asset(
                 'assets/icons/4.2.png',
-                height: appHeight * 0.035,
+                height: iconHeght,
                 color: AppColors.primaryYellow,
               ),
               label: '',

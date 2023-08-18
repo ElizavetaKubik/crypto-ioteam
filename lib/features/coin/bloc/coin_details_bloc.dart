@@ -14,18 +14,38 @@ class CoinDetailsBloc extends Bloc<CoinDetailsEvent, CoinDetailsState> {
 
   FutureOr<void> _loadCoinChart(event, emit) async {
     try {
-      // if (state is! CoinDetailsLoaded) {
-      //   emit(CoinDetailsLoading());
-      // }
       emit(CoinDetailsLoading());
 
-      final coinChart =
+      final chartList =
           await _coinRepository.getCoinChart(event.coinId, event.time);
 
-      emit(CoinDetailsLoaded(chartList: coinChart));
+      double minVal = _calculateMinVal(chartList);
+      double maxVal = _calculateMaxVal(chartList);
+
+      emit(CoinDetailsLoaded(
+        chartList: chartList,
+        minVal: minVal,
+        maxVal: maxVal,
+      ));
     } catch (e) {
       emit(CoinDetailsLoadingFailure(exeption: e));
     }
+  }
+
+  double _calculateMaxVal(List<ChartModel> chartList) {
+    double maxVal = chartList.map((e) => e.high).fold(
+        double.negativeInfinity,
+        (double current, double? next) =>
+            next != null ? (next > current ? next : current) : current);
+    return maxVal;
+  }
+
+  double _calculateMinVal(List<ChartModel> chartList) {
+    double minVal = chartList.map((e) => e.low).fold(
+        double.infinity,
+        (double current, double? next) =>
+            next != null ? (next < current ? next : current) : current);
+    return minVal;
   }
 
   final AbstractCoinRepository _coinRepository;
