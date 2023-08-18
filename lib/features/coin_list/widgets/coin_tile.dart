@@ -18,7 +18,7 @@ class CoinTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            flex: 4,
+            flex: 3,
             child: Image.network(
               coin.image,
               height: appHeight * 0.05,
@@ -51,10 +51,10 @@ class CoinTile extends StatelessWidget {
           ),
           SizedBox(width: appWidth * 0.02),
           Expanded(
-            flex: 6,
-            child: Container(
+            flex: 5,
+            child: SizedBox(
               height: appHeight * 0.05,
-              width: appWidth * 0.15,
+              width: appWidth * 0.1,
               child: Sparkline(
                 data: coin.sparklineIn7D.price,
                 lineWidth: 2.0,

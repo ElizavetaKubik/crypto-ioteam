@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: appWidth * 0.03),
-                    child: Container(
+                    child: SizedBox(
                       //height: appHeight * 0.23,
                       width: appWidth,
                       //color: Colors.green,

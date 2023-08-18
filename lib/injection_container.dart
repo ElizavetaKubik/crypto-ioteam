@@ -1,3 +1,4 @@
+import 'package:crypto_ioteam/features/coin/bloc/coin_details_bloc.dart';
 import 'package:crypto_ioteam/features/coin_list/bloc/coin_list_bloc.dart';
 import 'package:crypto_ioteam/repository/abstract_coin_repository.dart';
 import 'package:crypto_ioteam/repository/coin_list_repository.dart';
@@ -12,4 +13,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<AbstractCoinRepository>(CoinRepository(sl()));
 
   sl.registerFactory<CoinListBloc>(() => CoinListBloc(sl()));
+  sl.registerFactory<CoinDetailsBloc>(() => CoinDetailsBloc(sl()));
 }

@@ -15,6 +15,16 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
+    CoinRoute.name: (routeData) {
+      final args = routeData.argsAs<CoinRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CoinScreen(
+          key: args.key,
+          coin: args.coin,
+        ),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -34,6 +44,43 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
   };
+}
+
+/// generated route for
+/// [CoinScreen]
+class CoinRoute extends PageRouteInfo<CoinRouteArgs> {
+  CoinRoute({
+    Key? key,
+    required CoinModel coin,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CoinRoute.name,
+          args: CoinRouteArgs(
+            key: key,
+            coin: coin,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'CoinRoute';
+
+  static const PageInfo<CoinRouteArgs> page = PageInfo<CoinRouteArgs>(name);
+}
+
+class CoinRouteArgs {
+  const CoinRouteArgs({
+    this.key,
+    required this.coin,
+  });
+
+  final Key? key;
+
+  final CoinModel coin;
+
+  @override
+  String toString() {
+    return 'CoinRouteArgs{key: $key, coin: $coin}';
+  }
 }
 
 /// generated route for
