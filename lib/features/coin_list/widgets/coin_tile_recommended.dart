@@ -42,6 +42,7 @@ class CoinTileRecommended extends StatelessWidget {
             children: [
               SizedBox(
                 height: screenHeight * 0.035,
+                height: screenHeight * 0.035,
                 child: Image.network(
                   coin.image,
                 ),
@@ -63,6 +64,7 @@ class CoinTileRecommended extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: screenWidth * 0.03),
+                  SizedBox(width: screenWidth * 0.03),
                   Text(
                     '${coin.marketCapChangePercentage24H.toStringAsFixed(2)}%',
                     style: theme.textTheme.labelSmall?.copyWith(
@@ -72,7 +74,7 @@ class CoinTileRecommended extends StatelessWidget {
                     ),
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
